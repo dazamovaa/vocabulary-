@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Unit 3–4 inglizcha-o‘zbekcha lug‘at: talaffuz, kartochkalar va testlar.">
+<title>Unit 3–4 Lug‘at</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: moon header with theme switch, sticky 5-tab bar, unit chips, one working pane. Light Moon = daytime sky, Night Moon = indigo sky with stars. */
+:root{
+  --sky:#e9edf7; --sky2:#f6f3ea; --card:#ffffff; --ink:#1a2148; --muted:#5e6790; --line:#d5dbec;
+  --accent:#2e3a94; --accent-soft:#e2e6fa; --glow:#e7b84a; --glow-soft:#fbf0d2;
+  --ok:#1b8459; --ok-soft:#dbf2e6; --bad:#bf3a49; --bad-soft:#fbe2e5;
+  --moon:#dfe3ef; --crater:#c7cde0; --moonshine:0 0 0 rgba(0,0,0,0); --stars:0;
+  --display:"Young Serif",Georgia,"Times New Roman",serif;
+  --body:"Figtree",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --sky:#0d1230; --sky2:#1a1745; --card:#171e46; --ink:#eceaf8; --muted:#a2a8cd; --line:#2c3466;
+  --accent:#f1d37a; --accent-soft:#3a3466; --glow:#f1d37a; --glow-soft:#3b3256;
+  --ok:#5fd6a1; --ok-soft:#163b31; --bad:#ff8d98; --bad-soft:#4a1f2e;
+  --moon:#f6ecc8; --crater:#e4d5a3; --moonshine:0 0 34px 6px rgba(246,226,160,.35); --stars:1; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --sky:#0d1230; --sky2:#1a1745; --card:#171e46; --ink:#eceaf8; --muted:#a2a8cd; --line:#2c3466;
+  --accent:#f1d37a; --accent-soft:#3a3466; --glow:#f1d37a; --glow-soft:#3b3256;
+  --ok:#5fd6a1; --ok-soft:#163b31; --bad:#ff8d98; --bad-soft:#4a1f2e;
+  --moon:#f6ecc8; --crater:#e4d5a3; --moonshine:0 0 34px 6px rgba(246,226,160,.35); --stars:1; color-scheme:dark}
+*{box-sizing:border-box}
+html{background:var(--sky)}
+body{background:linear-gradient(180deg,var(--sky2) 0,var(--sky) 340px) var(--sky);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;min-height:100vh;transition:background-color .4s}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:var(--stars);transition:opacity .6s;
+  background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 33% 8%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 58% 22%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 76% 12%,#fff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 88% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 22% 40%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 66% 46%,#fff 50%,transparent 51%),radial-gradient(1.3px 1.3px at 44% 62%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 8% 74%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 92% 68%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 52% 86%,#fff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 80% 90%,#fff 50%,transparent 51%)}
+.wrap{position:relative;max-width:780px;margin:0 auto;padding:0 16px;padding-block:22px 56px}
+header{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
+header .eyebrow{font:500 .7rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+header h1{font-family:var(--display);font-weight:400;font-size:clamp(1.9rem,7vw,2.8rem);line-height:1.05;margin:.25rem 0 0;text-wrap:balance}
+header h1 em{font-style:normal;color:var(--accent)}
+header p{color:var(--muted);margin:.5rem 0 0;max-width:46ch}
+.moonbox{display:flex;flex-direction:column;align-items:center;gap:10px}
+.moon{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 30% 34%,var(--crater) 0 7px,transparent 8px),radial-gradient(circle at 64% 60%,var(--crater) 0 10px,transparent 11px),radial-gradient(circle at 58% 26%,var(--crater) 0 4px,transparent 5px),var(--moon);box-shadow:var(--moonshine);transition:box-shadow .6s,background-color .6s}
+.theme-btn{display:flex;align-items:center;gap:6px;font:600 .78rem var(--body);border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 11px 6px 8px;cursor:pointer;white-space:nowrap}
+.theme-btn svg{width:16px;height:16px}
+.stats{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font:500 .78rem var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.stats b{color:var(--ink)}
+.dbstate{display:inline-flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--ok)}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:5px;margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 18px -12px rgba(20,25,70,.45)}
+.tab{font:600 .86rem var(--body);border:0;background:transparent;color:var(--muted);border-radius:10px;padding:9px 2px;cursor:pointer;min-width:0}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--card)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-block:12px 4px;scrollbar-width:none}
+.chip{flex:none;font:500 .72rem var(--mono);letter-spacing:.02em;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:6px 11px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink);border-color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
+.pane{margin-top:14px}
+.empty{color:var(--muted);text-align:center;padding:34px 12px;background:var(--card);border:1px dashed var(--line);border-radius:14px}
+/* pronunciation */
+.ipa{font:500 .78rem var(--mono);color:var(--muted)}
+.say{display:inline-block;font:600 .76rem var(--body);letter-spacing:.02em;color:var(--ink);background:var(--glow-soft);border-radius:6px;padding:1px 7px}
+.spk{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--accent);cursor:pointer;display:grid;place-items:center}
+.spk svg{width:16px;height:16px}
+.spk.big{width:46px;height:46px}.spk.big svg{width:20px;height:20px}
+details.guide{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+details.guide summary{cursor:pointer;font-weight:600}
+details.guide ul{margin:.6rem 0 .2rem;padding-left:1.1rem;color:var(--muted)}
+details.guide li{margin:.2rem 0}
+/* list */
+.search{width:100%;font:inherit;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.toolbar{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{font:600 .9rem var(--body);border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:9px 14px;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.group{margin-top:22px}
+.group h2{font:500 .7rem var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 6px;display:flex;justify-content:space-between;gap:8px}
+.rows{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:auto minmax(0,1.1fr) minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 14px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .en{font-weight:700;font-size:1.02rem}
+.row .en .form{font:500 .72rem var(--mono);color:var(--muted);margin-left:6px}
+.row .pr{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.row .uz{color:var(--muted)}
+.star{border:0;background:none;font-size:1.2rem;cursor:pointer;color:var(--line);padding:4px}
+.star.on{color:var(--glow)}
+.hide-uz .row .uz{color:transparent;background:var(--accent-soft);border-radius:6px;cursor:pointer;user-select:none}
+.hide-uz .row .uz.show{color:var(--muted);background:none}
+@media (max-width:540px){.row{grid-template-columns:auto minmax(0,1fr) auto}.row .uz{grid-column:2/3;grid-row:2;margin-top:-4px}.row .star{grid-row:1/3;grid-column:3}.row .spk{grid-row:1/3}}
+/* card */
+.card{height:290px;cursor:pointer}
+.card-in{position:relative;height:100%}
+.face{transition:opacity .25s ease,transform .3s ease,visibility .25s}
+.face.back{opacity:0;visibility:hidden;transform:scale(.96)}
+.card.flip .face.front{opacity:0;visibility:hidden;transform:scale(.96)}
+.card.flip .face.back{opacity:1;visibility:visible;transform:none}
+.face{position:absolute;inset:0;border-radius:20px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:22px;text-align:center;overflow:hidden}
+.face::after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;right:-60px;top:-60px;background:var(--glow-soft);opacity:.7;pointer-events:none}
+.face .big{font-family:var(--display);font-size:clamp(1.9rem,8vw,2.7rem);line-height:1.1;overflow-wrap:anywhere;position:relative;z-index:1}
+.face .sub{font:500 .78rem var(--mono);color:var(--muted);position:relative;z-index:1}
+.face .hint{position:absolute;bottom:12px;font-size:.78rem;color:var(--muted)}
+.face .pr{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.counter{font:500 .78rem var(--mono);color:var(--muted);text-align:center;margin-top:10px;font-variant-numeric:tabular-nums}
+.ctrl{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.ctrl .know{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.ctrl .again{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.seg{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+/* quiz */
+.q{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px}
+.q .label{font:500 .7rem var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.q .prompt{font-family:var(--display);font-size:clamp(1.6rem,6vw,2.1rem);margin:6px 0 0;overflow-wrap:anywhere;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.opts{display:grid;gap:8px;margin-top:16px}
+.opt{text-align:left;font:600 1rem var(--body);padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--sky);color:var(--ink);cursor:pointer}
+.opt.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.opt.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.score{display:flex;justify-content:space-between;font:500 .78rem var(--mono);color:var(--muted);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--glow);transition:width .3s}
+.write input{width:100%;font:600 1.1rem var(--body);padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--sky);color:var(--ink);margin-top:16px}
+.feedback{margin-top:10px;min-height:1.5em;font-weight:600}
+.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}
+.done{text-align:center}
+.done .big{font-family:var(--display);font-size:3.2rem}
+/* database */
+.dbhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.dbhead h2{font-family:var(--display);font-weight:400;font-size:1.5rem;margin:0}
+.form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.form label{display:flex;flex-direction:column;gap:4px;font:500 .72rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);min-width:0}
+.form input,.form select{font:500 1rem var(--body);text-transform:none;letter-spacing:0;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--sky);color:var(--ink);width:100%}
+.form .full{grid-column:1/-1}
+.form .actions{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.msg{font-weight:600;font-size:.9rem}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.tablewrap{overflow-x:auto;margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 .68rem var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:var(--accent-soft)}
+tr:last-child td{border-bottom:0}
+td .mini{font:600 .78rem var(--body);border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:4px 8px;cursor:pointer;margin-right:4px}
+td .mini.del{color:var(--bad)}
+td .mini.confirm{background:var(--bad);color:var(--card);border-color:var(--bad)}
+@media (max-width:540px){.form{grid-template-columns:1fr}.tab{font-size:.76rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Unit 3 · Unit 4 · English → O‘zbek</div>
+      <h1>Oy nurida <em>lug‘at</em></h1>
+      <p>So‘zlarni o‘qing, talaffuzini tinglang, kartochkada takrorlang va testda tekshiring.</p>
+    </div>
+    <div class="moonbox">
+      <div class="moon" aria-hidden="true"></div>
+      <button class="theme-btn" id="themeBtn" type="button"></button>
+    </div>
+  </header>
+  <div class="stats">
+    <span><b id="sTotal">0</b> so‘z</span><span><b id="sKnown">0</b> o‘rganildi</span><span><b id="sStar">0</b> ★</span>
+    <span class="dbstate"><i class="dot" id="dbDot"></i><span id="dbText">Yuklanmoqda…</span></span>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-mode="list">Ro‘yxat</button>
+    <button class="tab" role="tab" data-mode="card">Kartochka</button>
+    <button class="tab" role="tab" data-mode="quiz">Test</button>
+    <button class="tab" role="tab" data-mode="write">Yozish</button>
+    <button class="tab" role="tab" data-mode="db">Baza</button>
+  </nav>
+  <div class="chips" id="chips"></div>
+  <main class="pane" id="pane"><div class="empty">So‘zlar ma’lumotlar bazasidan yuklanmoqda…</div></main>
+</div>
+
+<script>
+const ICON_SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+const ICON_SUN_MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/></svg>';
+const ICON_CRESCENT='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>';
+
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ---------- theme: Light Moon / Night Moon ---------- */
+function isNight(){const t=document.documentElement.dataset.theme;if(t)return t==="dark";return matchMedia("(prefers-color-scheme: dark)").matches}
+function paintThemeBtn(){const n=isNight();$("#themeBtn").innerHTML=(n?ICON_CRESCENT+"Night Moon":ICON_SUN_MOON+"Light Moon");$("#themeBtn").setAttribute("aria-label",n?"Kunduzgi mavzuga o‘tish":"Tungi mavzuga o‘tish")}
+(function(){const t=store.get("lg_theme",null);if(t)document.documentElement.dataset.theme=t;paintThemeBtn();
+  $("#themeBtn").onclick=()=>{const t=isNight()?"light":"dark";document.documentElement.dataset.theme=t;store.set("lg_theme",t);paintThemeBtn()};
+  try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",paintThemeBtn)}catch(e){}})();
+
+/* ---------- speech ---------- */
+let voice=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices();voice=vs.find(v=>/en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null}catch(e){}}
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+function speak(text){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=.82;if(voice)u.voice=voice;speechSynthesis.speak(u)}catch(e){}}
+const spkBtn=(text,big)=>`<button class="spk${big?" big":""}" type="button" data-say="${esc(text)}" aria-label="Tinglash: ${esc(text)}">${ICON_SPK}</button>`;
+document.addEventListener("click",e=>{const b=e.target.closest("[data-say]");if(b){e.stopPropagation();speak(b.dataset.say)}},true);
+const pron=w=>`${w.ipa?`<span class="ipa">${esc(w.ipa)}</span>`:""}${w.say?`<span class="say">${esc(w.say)}</span>`:""}`;
+
+/* ---------- state ---------- */
+let WORDS=[], UNITS=[];
+let known=new Set(store.get("lg_known",[])), starred=new Set(store.get("lg_star",[]));
+let mode=store.get("lg_mode","list"), unit=store.get("lg_unit","all");
+let db=null,userCap=null,uid=null,canWrite=null,loaded=false,progressRef=null,progTimer=null;
+
+function stats(){$("#sTotal").textContent=WORDS.length;$("#sKnown").textContent=[...known].filter(id=>WORDS.some(w=>w.id===id)).length;$("#sStar").textContent=[...starred].filter(id=>WORDS.some(w=>w.id===id)).length}
+function saveProgress(){
+  store.set("lg_known",[...known]);store.set("lg_star",[...starred]);stats();
+  if(!progressRef)return;clearTimeout(progTimer);
+  progTimer=setTimeout(()=>{progressRef.set({known:[...known],star:[...starred],updated:new Date().toISOString()}).catch(()=>{})},1200);
+}
+function saveUI(){store.set("lg_mode",mode);store.set("lg_unit",unit)}
+function pool(){return WORDS.filter(w=>unit==="all"||(unit==="star"?starred.has(w.id):w.unit===unit))}
+
+function chips(){
+  if(unit!=="all"&&unit!=="star"&&!UNITS.includes(unit))unit="all";
+  const items=[["all","Hammasi"],["star","★ Belgilangan"],...UNITS.map(u=>[u,u])];
+  $("#chips").innerHTML=items.map(([v,l])=>`<button class="chip" data-u="${esc(v)}" aria-pressed="${unit===v}">${esc(l)}</button>`).join("");
+  $("#chips").hidden=mode==="db";
+}
+$("#chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;unit=b.dataset.u;saveUI();chips();render()};
+document.querySelector(".tabs").onclick=e=>{const b=e.target.closest(".tab");if(!b)return;mode=b.dataset.mode;saveUI();chips();render()};
+
+/* ---------- list ---------- */
+let hideUz=false,q="";
+const guide=`<details class="guide"><summary>Talaffuz yozuvini qanday o‘qish kerak?</summary><ul>
+<li><b>KATTA harflar</b> — urg‘u tushadigan bo‘g‘in: <span class="say">ri-MEYN</span></li>
+<li><b>/…/</b> — xalqaro transkripsiya (IPA), lug‘atlardagi kabi.</li>
+<li><b>w</b> — lablarni cho‘chaytirib, qisqa “u” bilan boshlang: <span class="say">WIN</span></li>
+<li><b>z / s</b> o‘rnidagi <b>th</b> (ð, θ) — tilni tishlar orasiga qo‘yib ayting.</li>
+<li><b>ö</b> — o‘zbekcha “o‘” va “e” orasidagi tovush: <span class="say">FÖ-zer</span></li>
+<li>🔊 tugmasini bosib, so‘zni ingliz talaffuzida tinglang.</li></ul></details>`;
+function renderList(){
+  const p=$("#pane");
+  p.innerHTML=`<input class="search" id="srch" type="search" placeholder="Qidirish: inglizcha yoki o‘zbekcha…" value="${esc(q)}">
+   <div class="toolbar"><button class="btn" id="hideBtn" aria-pressed="${hideUz}">${hideUz?"Tarjimani ko‘rsatish":"Tarjimani yashirish"}</button></div>${guide}<div id="groups"></div>`;
+  const draw=()=>{
+    const t=q.trim().toLowerCase(), list=pool().filter(w=>!t||(w.en+" "+w.form+" "+w.uz).toLowerCase().includes(t));
+    const g=$("#groups");g.className=hideUz?"hide-uz":"";
+    if(!list.length){g.innerHTML=`<div class="empty" style="margin-top:16px">${unit==="star"?"Hali ★ belgilangan so‘z yo‘q. Ro‘yxatda yulduzchani bosing.":"Hech narsa topilmadi."}</div>`;return}
+    const by=new Map();list.forEach(w=>{if(!by.has(w.unit))by.set(w.unit,[]);by.get(w.unit).push(w)});
+    g.innerHTML=[...by].map(([u,ws])=>`<section class="group"><h2><span>${esc(u)}</span><span>${ws.length}</span></h2><div class="rows">${
+      ws.map(w=>`<div class="row">${spkBtn(w.en)}<div><div class="en">${esc(w.en)}${w.form?`<span class="form">${esc(w.form)}</span>`:""}</div><div class="pr">${pron(w)}</div></div><div class="uz">${esc(w.uz)}</div><button class="star ${starred.has(w.id)?"on":""}" data-id="${w.id}" aria-label="Belgilash">★</button></div>`).join("")}</div></section>`).join("");
+  };
+  draw();
+  $("#srch").oninput=e=>{q=e.target.value;draw()};
+  $("#hideBtn").onclick=()=>{hideUz=!hideUz;renderList()};
+  $("#groups").onclick=e=>{const s=e.target.closest(".star");if(s){const id=s.dataset.id;starred.has(id)?starred.delete(id):starred.add(id);s.classList.toggle("on");saveProgress();return}
+    const u=e.target.closest(".uz");if(u&&hideUz)u.classList.toggle("show")};
+}
+
+/* ---------- cards ---------- */
+let deck=[],di=0,reverse=store.get("lg_rev",false);
+function renderCard(){
+  const p=$("#pane");deck=shuffle(pool());di=0;
+  if(!deck.length){p.innerHTML=`<div class="empty">Bu bo‘limda so‘z yo‘q.</div>`;return}
+  p.innerHTML=`<div class="seg"><button class="btn" id="dirBtn">${reverse?"O‘zbek → English":"English → O‘zbek"}</button><button class="btn" id="shufBtn">Aralashtirish</button></div>
+   <div class="card" id="card" tabindex="0"><div class="card-in"><div class="face front" id="front"></div><div class="face back" id="back"></div></div></div>
+   <div class="counter" id="cnt"></div>
+   <div class="ctrl"><button class="btn again" id="again">Yana</button><button class="btn" id="prev">← Oldingi</button><button class="btn know" id="know">Bilaman ✓</button></div>`;
+  const enFace=w=>`<div class="big">${esc(w.en)}</div><div class="pr">${pron(w)}</div>${spkBtn(w.en,true)}${w.form?`<div class="sub">${esc(w.form)}</div>`:""}`;
+  const uzFace=w=>`<div class="big">${esc(w.uz)}</div><div class="sub">${esc(w.unit)}</div>`;
+  const show=()=>{const w=deck[di];$("#card").classList.remove("flip");
+    $("#front").innerHTML=(reverse?uzFace(w):enFace(w))+`<div class="hint">Aylantirish uchun bosing</div>`;$("#back").innerHTML=reverse?enFace(w):uzFace(w);
+    $("#cnt").textContent=`${di+1} / ${deck.length}${known.has(w.id)?"  ·  ✓ o‘rganilgan":""}`};
+  const next=()=>{di=(di+1)%deck.length;show()};
+  $("#card").onclick=()=>{$("#card").classList.toggle("flip");if(reverse&&$("#card").classList.contains("flip"))speak(deck[di].en)};
+  $("#card").onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();$("#card").click()}};
+  $("#know").onclick=()=>{known.add(deck[di].id);saveProgress();next()};
+  $("#again").onclick=()=>{known.delete(deck[di].id);saveProgress();deck.push(deck[di]);next()};
+  $("#prev").onclick=()=>{di=(di-1+deck.length)%deck.length;show()};
+  $("#dirBtn").onclick=()=>{reverse=!reverse;store.set("lg_rev",reverse);renderCard()};
+  $("#shufBtn").onclick=renderCard;
+  show();
+}
+
+/* ---------- quiz & write ---------- */
+function quizRun(kind){
+  const p=$("#pane"), base=pool(), qs=shuffle(base).slice(0,Math.min(15,base.length));
+  if(qs.length<2){p.innerHTML=`<div class="empty">Test uchun kamida 2 ta so‘z kerak. Boshqa bo‘limni tanlang.</div>`;return}
+  let i=0,score=0,wrong=[];const dir=store.get("lg_qdir","en");
+  const step=()=>{
+    if(i>=qs.length){const pct=Math.round(score/qs.length*100);
+      p.innerHTML=`<div class="q done"><div class="label">Natija</div><div class="big">${score}/${qs.length}</div><p>${pct>=90?"Ajoyib! Deyarli hammasini bilasiz.":pct>=60?"Yaxshi. Xatolarni yana bir bor ko‘rib chiqing.":"Kartochkalar bilan yana takrorlab ko‘ring."}</p>
+      ${wrong.length?`<div class="rows" style="text-align:left;margin:14px 0">${wrong.map(w=>`<div class="row">${spkBtn(w.en)}<div><div class="en">${esc(w.en)}</div><div class="pr">${pron(w)}</div></div><div class="uz">${esc(w.uz)}</div><span></span></div>`).join("")}</div>`:""}
+      <button class="btn primary" id="re">Qaytadan</button></div>`;$("#re").onclick=()=>quizRun(kind);return}
+    const w=qs[i];
+    const head=`<div class="score"><span>${i+1} / ${qs.length}</span><span>To‘g‘ri: ${score}</span></div><div class="bar"><i style="width:${i/qs.length*100}%"></i></div>`;
+    if(kind==="quiz"){
+      const key=dir==="en"?"uz":"en";
+      const others=shuffle(WORDS.filter(x=>x[key]!==w[key])).filter((x,k,a)=>a.findIndex(y=>y[key]===x[key])===k).slice(0,3);
+      const opts=shuffle([w,...others]);
+      p.innerHTML=`<div class="seg"><button class="btn" id="qd">${dir==="en"?"English → O‘zbek":"O‘zbek → English"}</button></div><div class="q">${head}<div class="label">Tarjimasini tanlang</div>
+        <div class="prompt">${dir==="en"?esc(w.en)+spkBtn(w.en):esc(w.uz)}</div>${dir==="en"?`<div class="pr" style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap">${pron(w)}</div>`:""}
+        <div class="opts">${opts.map(o=>`<button class="opt" data-id="${o.id}">${esc(o[key])}</button>`).join("")}</div></div>`;
+      $("#qd").onclick=()=>{store.set("lg_qdir",dir==="en"?"uz":"en");quizRun(kind)};
+      p.querySelector(".opts").onclick=e=>{const b=e.target.closest(".opt");if(!b||p.querySelector(".opt.ok"))return;
+        const right=b.dataset.id===w.id;
+        p.querySelectorAll(".opt").forEach(o=>{if(o.dataset.id===w.id)o.classList.add("ok")});
+        if(right){score++;known.add(w.id)}else{b.classList.add("bad");wrong.push(w)}
+        saveProgress();setTimeout(()=>{i++;step()},right?650:1500)};
+    }else{
+      p.innerHTML=`<div class="q write">${head}<div class="label">Inglizcha yozing</div><div class="prompt">${esc(w.uz)}</div>
+        <form id="wf"><input id="wi" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="English so‘z…"><div class="toolbar"><button class="btn primary" type="submit">Tekshirish</button><button class="btn" type="button" id="hear">🔊 Eshitish</button><button class="btn" type="button" id="skip">Bilmayman</button></div></form>
+        <div class="feedback" id="fb"></div></div>`;
+      const inp=$("#wi");inp.focus({preventScroll:true});let answered=false;
+      const norm=s=>s.toLowerCase().replace(/[’'‘]/g,"'").replace(/\s+/g," ").trim();
+      const finish=ok=>{answered=true;const fb=$("#fb");speak(w.en);
+        if(ok){score++;known.add(w.id);fb.className="feedback ok";fb.textContent="To‘g‘ri! ✓ "+w.en+(w.say?"  ·  "+w.say:"")}
+        else{wrong.push(w);fb.className="feedback bad";fb.textContent="Javob: "+w.en+(w.say?"  ·  "+w.say:"")}
+        saveProgress();setTimeout(()=>{i++;step()},ok?1100:2200)};
+      $("#wf").onsubmit=e=>{e.preventDefault();if(answered)return;const v=norm(inp.value);if(!v)return;finish(v===norm(w.en)||(!!w.form&&v===norm(w.form)))};
+      $("#hear").onclick=()=>speak(w.en);
+      $("#skip").onclick=()=>{if(!answered)finish(false)};
+    }
+  };
+  step();
+}
+
+/* ---------- database tab ---------- */
+let editId=null,confirmDel=null;
+function renderDb(){
+  const p=$("#pane");
+  if(!db){p.innerHTML=`<div class="empty">Ma’lumotlar bazasi bu ko‘rinishda ishlamayapti. Sahifani claude.ai’da tizimga kirgan holda oching.</div>`;return}
+  const ro=canWrite===false;
+  const w=editId?WORDS.find(x=>x.id===editId):null;
+  p.innerHTML=`<div class="dbhead"><h2>Ma’lumotlar bazasi</h2><span class="ipa">${WORDS.length} ta yozuv · ${UNITS.length} ta bo‘lim</span></div>
+   ${ro?`<div class="empty" style="margin-top:12px">Sizda faqat ko‘rish huquqi bor. So‘z qo‘shish uchun sahifa egasidan tahrirlash huquqini so‘rang.</div>`:`
+   <form class="form" id="wordForm">
+     <label>English so‘z<input id="fEn" required value="${esc(w?.en)}" placeholder="masalan: endure"></label>
+     <label>Shakli (ixtiyoriy)<input id="fForm" value="${esc(w?.form)}" placeholder="endured"></label>
+     <label class="full">O‘zbekcha tarjima<input id="fUz" required value="${esc(w?.uz)}" placeholder="bardosh bermoq, chidamoq"></label>
+     <label>Transkripsiya (IPA)<input id="fIpa" value="${esc(w?.ipa)}" placeholder="/ɪnˈdjʊər/"></label>
+     <label>O‘qilishi<input id="fSay" value="${esc(w?.say)}" placeholder="in-DYUR"></label>
+     <label class="full">Bo‘lim<select id="fUnit">${UNITS.map(u=>`<option ${u===(w?.unit||UNITS[UNITS.length-1])?"selected":""}>${esc(u)}</option>`).join("")}<option value="__new">+ Yangi bo‘lim…</option></select></label>
+     <label class="full" id="newUnitWrap" hidden>Yangi bo‘lim nomi<input id="fNewUnit" placeholder="masalan: Unit 5A · 70-bet"></label>
+     <div class="actions"><button class="btn primary" type="submit">${w?"O‘zgarishni saqlash":"Bazaga qo‘shish"}</button>${w?`<button class="btn" type="button" id="cancelEdit">Bekor qilish</button>`:""}<span class="msg" id="fMsg"></span></div>
+   </form>`}
+   <div class="tablewrap"><table><thead><tr><th></th><th>English</th><th>O‘qilishi</th><th>O‘zbekcha</th><th>Bo‘lim</th>${ro?"":"<th></th>"}</tr></thead><tbody>
+   ${WORDS.map(x=>`<tr><td>${spkBtn(x.en)}</td><td><b>${esc(x.en)}</b>${x.form?`<div class="ipa">${esc(x.form)}</div>`:""}</td><td><div class="ipa">${esc(x.ipa)}</div>${x.say?`<span class="say">${esc(x.say)}</span>`:""}</td><td>${esc(x.uz)}</td><td class="ipa">${esc(x.unit)}</td>${ro?"":`<td style="white-space:nowrap"><button class="mini" data-edit="${x.id}">Tahrirlash</button><button class="mini del ${confirmDel===x.id?"confirm":""}" data-del="${x.id}">${confirmDel===x.id?"Rostdan o‘chirilsinmi?":"O‘chirish"}</button></td>`}</tr>`).join("")}
+   </tbody></table></div>`;
+  if(!ro){
+    const sel=$("#fUnit");sel.onchange=()=>{$("#newUnitWrap").hidden=sel.value!=="__new"};
+    if($("#cancelEdit"))$("#cancelEdit").onclick=()=>{editId=null;renderDb()};
+    $("#wordForm").onsubmit=async e=>{
+      e.preventDefault();const msg=$("#fMsg");
+      const u=sel.value==="__new"?$("#fNewUnit").value.trim():sel.value;
+      if(!u){msg.className="msg bad";msg.textContent="Bo‘lim nomini yozing.";return}
+      const data={en:$("#fEn").value.trim(),form:$("#fForm").value.trim(),uz:$("#fUz").value.trim(),ipa:$("#fIpa").value.trim(),say:$("#fSay").value.trim(),unit:u};
+      if(!data.en||!data.uz){msg.className="msg bad";msg.textContent="English so‘z va tarjimani to‘ldiring.";return}
+      const ui=UNITS.indexOf(u);data.u=ui>=0?WORDS.find(x=>x.unit===u)?.u??ui:Math.max(-1,...WORDS.map(x=>x.u))+1;
+      data.order=w&&w.unit===u?w.order:Math.max(-1,...WORDS.filter(x=>x.unit===u).map(x=>x.order))+1;
+      try{
+        if(w)await db.collection("words").doc(w.id).set(data);else await db.collection("words").add(data);
+        const was=!!w;editId=null;renderDb();const m=$("#fMsg");if(m){m.className="msg ok";m.textContent=was?"Saqlandi.":"Qo‘shildi: "+data.en}
+      }catch(err){msg.className="msg bad";
+        if(err&&err.code==="invalid_argument"){canWrite=false;msg.textContent="Bazaga yozish huquqingiz yo‘q.";}
+        else if(err&&err.code==="quota_exceeded")msg.textContent="Baza to‘lib qoldi. Ba’zi yozuvlarni o‘chiring.";
+        else msg.textContent="Saqlab bo‘lmadi. Bir ozdan keyin qayta urinib ko‘ring.";}
+    };
+  }
+  p.querySelector("tbody").onclick=async e=>{
+    const ed=e.target.closest("[data-edit]"),de=e.target.closest("[data-del]");
+    if(ed){editId=ed.dataset.edit;confirmDel=null;renderDb();window.scrollTo({top:$("#wordForm").offsetTop-90,behavior:"smooth"});return}
+    if(de){const id=de.dataset.del;if(confirmDel!==id){confirmDel=id;renderDb();return}
+      confirmDel=null;try{await db.collection("words").doc(id).delete()}catch(err){} }
+  };
+}
+
+function render(){
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.mode===mode));
+  if(mode==="db"){renderDb();return}
+  if(!loaded){$("#pane").innerHTML=`<div class="empty">So‘zlar ma’lumotlar bazasidan yuklanmoqda…</div>`;return}
+  if(!WORDS.length){$("#pane").innerHTML=`<div class="empty">Bazada hali so‘z yo‘q. “Baza” bo‘limida birinchi so‘zni qo‘shing.</div>`;return}
+  if(mode==="list")renderList();else if(mode==="card")renderCard();else quizRun(mode);
+}
+
+/* ---------- boot (standalone: words live in this file + this device) ---------- */
+const SEED=[{"en": "teenager", "form": "", "uz": "o‘smir", "ipa": "/ˈtiːneɪdʒər/", "say": "TIN-ey-jer", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 0, "id": "w0-00"}, {"en": "remain", "form": "remained", "uz": "qolmoq", "ipa": "/rɪˈmeɪn/", "say": "ri-MEYN", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 1, "id": "w0-01"}, {"en": "possibility", "form": "", "uz": "ehtimollik, imkoniyat", "ipa": "/ˌpɒsəˈbɪləti/", "say": "po-se-BI-le-ti", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 2, "id": "w0-02"}, {"en": "offer", "form": "offering", "uz": "taklif qilmoq, sunmoq", "ipa": "/ˈɒfər/", "say": "O-fer", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 3, "id": "w0-03"}, {"en": "carefully", "form": "careful", "uz": "ehtiyotkorlik bilan", "ipa": "/ˈkeəfəli/", "say": "KEER-fe-li", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 4, "id": "w0-04"}, {"en": "attempt", "form": "attempted", "uz": "urinmoq, harakat qilmoq", "ipa": "/əˈtempt/", "say": "e-TEMPT", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 5, "id": "w0-05"}, {"en": "attach", "form": "attached", "uz": "yopishmoq, birikmoq", "ipa": "/əˈtætʃ/", "say": "e-TECH", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 6, "id": "w0-06"}, {"en": "cause", "form": "caused", "uz": "sabab bo‘lmoq", "ipa": "/kɔːz/", "say": "KOZ", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 7, "id": "w0-07"}, {"en": "conduct", "form": "conducted", "uz": "o‘tkazmoq (tadqiqot/sinov)", "ipa": "/kənˈdʌkt/", "say": "ken-DAKT", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 8, "id": "w0-08"}, {"en": "various", "form": "", "uz": "turli xil, har xil", "ipa": "/ˈveəriəs/", "say": "VEE-ri-es", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 9, "id": "w0-09"}, {"en": "guess", "form": "guessed", "uz": "taxmin qilmoq", "ipa": "/ɡes/", "say": "GES", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 10, "id": "w0-10"}, {"en": "injury", "form": "", "uz": "jarohat, shikast", "ipa": "/ˈɪndʒəri/", "say": "IN-je-ri", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 11, "id": "w0-11"}, {"en": "skull", "form": "", "uz": "bosh suyagi, kalla", "ipa": "/skʌl/", "say": "SKAL", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 12, "id": "w0-12"}, {"en": "take control of", "form": "", "uz": "nazoratni qo‘lga olmoq", "ipa": "/teɪk kənˈtrəʊl əv/", "say": "teyk ken-TROUL ov", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 13, "id": "w0-13"}, {"en": "fracture", "form": "", "uz": "sinish, darz ketish", "ipa": "/ˈfræktʃər/", "say": "FREK-cher", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 14, "id": "w0-14"}, {"en": "infection", "form": "", "uz": "infeksiya, yuqumli xastalik", "ipa": "/ɪnˈfekʃn/", "say": "in-FEK-shn", "unit": "Unit 3A · 1-rasm", "u": 0, "order": 15, "id": "w0-15"}, {"en": "effective", "form": "", "uz": "samarali, ta’sirchan", "ipa": "/ɪˈfektɪv/", "say": "i-FEK-tiv", "unit": "Unit 3A · A Closer Look", "u": 1, "order": 0, "id": "w1-00"}, {"en": "analyze", "form": "analyzed", "uz": "tahlil qilmoq", "ipa": "/ˈænəlaɪz/", "say": "E-ne-layz", "unit": "Unit 3A · A Closer Look", "u": 1, "order": 1, "id": "w1-01"}, {"en": "flat feet", "form": "flat foot", "uz": "yassioyoqlik", "ipa": "/ˌflæt ˈfiːt/", "say": "flet FIT", "unit": "Unit 3A · A Closer Look", "u": 1, "order": 2, "id": "w1-02"}, {"en": "vulnerable", "form": "", "uz": "zaif, himoyasiz", "ipa": "/ˈvʌlnərəbl/", "say": "VAL-ne-re-bl", "unit": "Unit 3A · A Closer Look", "u": 1, "order": 3, "id": "w1-03"}, {"en": "fracture", "form": "fractured", "uz": "sindirmoq / singan", "ipa": "/ˈfræktʃərd/", "say": "FREK-cherd", "unit": "Unit 3A · A Closer Look", "u": 1, "order": 4, "id": "w1-04"}, {"en": "age-old", "form": "", "uz": "ko‘p asrlik, qadimiy", "ipa": "/ˌeɪdʒ ˈəʊld/", "say": "eyj-OULD", "unit": "Unit 3A · A Closer Look", "u": 1, "order": 5, "id": "w1-05"}, {"en": "indicate", "form": "indicated", "uz": "ko‘rsatmoq, bildirmoq", "ipa": "/ˈɪndɪkeɪt/", "say": "IN-di-keyt", "unit": "Unit 3B · 46-bet", "u": 2, "order": 0, "id": "w2-00"}, {"en": "condition", "form": "", "uz": "holat, sharoit", "ipa": "/kənˈdɪʃn/", "say": "ken-DI-shn", "unit": "Unit 3B · 46-bet", "u": 2, "order": 1, "id": "w2-01"}, {"en": "complete", "form": "", "uz": "to‘liq, mukammal", "ipa": "/kəmˈpliːt/", "say": "kem-PLIT", "unit": "Unit 3B · 46-bet", "u": 2, "order": 2, "id": "w2-02"}, {"en": "mid-forties", "form": "", "uz": "qirq yoshlar atrofida", "ipa": "/ˌmɪd ˈfɔːtiz/", "say": "mid-FOR-tiz", "unit": "Unit 3B · 46-bet", "u": 2, "order": 3, "id": "w2-03"}, {"en": "that he may have been", "form": "", "uz": "u bo‘lgan bo‘lishi mumkin", "ipa": "/ðæt hi meɪ həv biːn/", "say": "zet hi mey hev BIN", "unit": "Unit 3B · 46-bet", "u": 2, "order": 4, "id": "w2-04"}, {"en": "enable", "form": "enabled", "uz": "imkon bermoq", "ipa": "/ɪˈneɪbl/", "say": "i-NEY-bl", "unit": "Unit 3B · 46-bet", "u": 2, "order": 5, "id": "w2-05"}, {"en": "exactly", "form": "", "uz": "aniq, albatta", "ipa": "/ɪɡˈzæktli/", "say": "ig-ZEKT-li", "unit": "Unit 3B · 46-bet", "u": 2, "order": 6, "id": "w2-06"}, {"en": "such", "form": "", "uz": "shunday, bunday", "ipa": "/sʌtʃ/", "say": "SACH", "unit": "Unit 3B · 46-bet", "u": 2, "order": 7, "id": "w2-07"}, {"en": "religious", "form": "", "uz": "diniy", "ipa": "/rɪˈlɪdʒəs/", "say": "ri-LI-jes", "unit": "Unit 3B · 46-bet", "u": 2, "order": 8, "id": "w2-08"}, {"en": "tiny", "form": "", "uz": "kichkina, mitti", "ipa": "/ˈtaɪni/", "say": "TAY-ni", "unit": "Unit 3B · 46-bet", "u": 2, "order": 9, "id": "w2-09"}, {"en": "flee", "form": "fled", "uz": "qochmoq, qochib ketmoq", "ipa": "/fliː/", "say": "FLI", "unit": "Unit 3B · 46-bet", "u": 2, "order": 10, "id": "w2-10"}, {"en": "exposure", "form": "", "uz": "sovqotish, tashqi ta’sirga uchrash", "ipa": "/ɪkˈspəʊʒər/", "say": "ik-SPOU-jer", "unit": "Unit 3B · 46-bet", "u": 2, "order": 11, "id": "w2-11"}, {"en": "cruel", "form": "cruelly", "uz": "shafqatsiz", "ipa": "/ˈkruːəl/", "say": "KRU-el", "unit": "Unit 3B · A Bloody Discovery", "u": 3, "order": 0, "id": "w3-00"}, {"en": "beneath", "form": "", "uz": "ostida, tagida", "ipa": "/bɪˈniːθ/", "say": "bi-NIS", "unit": "Unit 3B · A Bloody Discovery", "u": 3, "order": 1, "id": "w3-01"}, {"en": "likely", "form": "", "uz": "ehtimolli, ehtimol", "ipa": "/ˈlaɪkli/", "say": "LAYK-li", "unit": "Unit 3B · A Bloody Discovery", "u": 3, "order": 2, "id": "w3-02"}, {"en": "chase", "form": "chased", "uz": "quvmoq, ketidan tushmoq", "ipa": "/tʃeɪs/", "say": "CHEYS", "unit": "Unit 3B · A Bloody Discovery", "u": 3, "order": 3, "id": "w3-03"}, {"en": "further", "form": "", "uz": "qo‘shimcha, keyingi", "ipa": "/ˈfɜːðər/", "say": "FÖ-zer", "unit": "Unit 3B · A Bloody Discovery", "u": 3, "order": 4, "id": "w3-04"}, {"en": "attack", "form": "attacked", "uz": "hujum qilmoq", "ipa": "/əˈtæk/", "say": "e-TEK", "unit": "Unit 3B · A Bloody Discovery", "u": 3, "order": 5, "id": "w3-05"}, {"en": "ritual", "form": "rituals", "uz": "marosim, urf-odat", "ipa": "/ˈrɪtʃuəl/", "say": "RI-chu-el", "unit": "Unit 4 · Traditions and Rituals", "u": 4, "order": 0, "id": "w4-00"}, {"en": "site", "form": "sites", "uz": "joy, hudud", "ipa": "/saɪt/", "say": "SAYT", "unit": "Unit 4A · 55-bet", "u": 5, "order": 0, "id": "w5-00"}, {"en": "cultural", "form": "", "uz": "madaniy", "ipa": "/ˈkʌltʃərəl/", "say": "KAL-che-rel", "unit": "Unit 4A · 55-bet", "u": 5, "order": 1, "id": "w5-01"}, {"en": "common", "form": "", "uz": "umumiy", "ipa": "/ˈkɒmən/", "say": "KO-men", "unit": "Unit 4A · 55-bet", "u": 5, "order": 2, "id": "w5-02"}, {"en": "intangible", "form": "", "uz": "nomoddiy, ushlab bo‘lmaydigan", "ipa": "/ɪnˈtændʒəbl/", "say": "in-TEN-je-bl", "unit": "Unit 4A · 55-bet", "u": 5, "order": 3, "id": "w5-03"}, {"en": "heritage", "form": "", "uz": "meros", "ipa": "/ˈherɪtɪdʒ/", "say": "HE-ri-tij", "unit": "Unit 4A · 55-bet", "u": 5, "order": 4, "id": "w5-04"}, {"en": "approve", "form": "approved", "uz": "tasdiqlamoq, ma’qullamoq", "ipa": "/əˈpruːv/", "say": "e-PRUV", "unit": "Unit 4A · 55-bet", "u": 5, "order": 5, "id": "w5-05"}, {"en": "diverse", "form": "", "uz": "xilma-xil, turli-tuman", "ipa": "/daɪˈvɜːs/", "say": "day-VÖS", "unit": "Unit 4A · 55-bet", "u": 5, "order": 6, "id": "w5-06"}, {"en": "perform", "form": "performing", "uz": "ijro etmoq, ko‘rsatmoq", "ipa": "/pəˈfɔːm/", "say": "pe-FORM", "unit": "Unit 4A · 55-bet", "u": 5, "order": 7, "id": "w5-07"}, {"en": "martial", "form": "", "uz": "harbiy", "ipa": "/ˈmɑːʃl/", "say": "MA-shl", "unit": "Unit 4A · 55-bet", "u": 5, "order": 8, "id": "w5-08"}, {"en": "cuisine", "form": "cuisines", "uz": "oshxona (taomlar majmui)", "ipa": "/kwɪˈziːn/", "say": "kwi-ZIN", "unit": "Unit 4A · 55-bet", "u": 5, "order": 9, "id": "w5-09"}, {"en": "aspect", "form": "", "uz": "jihat, tomon", "ipa": "/ˈæspekt/", "say": "ES-pekt", "unit": "Unit 4A · 55-bet", "u": 5, "order": 10, "id": "w5-10"}, {"en": "generosity", "form": "", "uz": "saxovat, qo‘li ochiqlik", "ipa": "/ˌdʒenəˈrɒsəti/", "say": "je-ne-RO-se-ti", "unit": "Unit 4A · 55-bet", "u": 5, "order": 11, "id": "w5-11"}, {"en": "relative", "form": "relatives", "uz": "qarindosh", "ipa": "/ˈrelətɪv/", "say": "RE-le-tiv", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 0, "id": "w6-00"}, {"en": "wrap", "form": "wrapped", "uz": "o‘ramoq, chulg‘amoq", "ipa": "/ræp/", "say": "REP", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 1, "id": "w6-01"}, {"en": "veil", "form": "", "uz": "ro‘mol, parda", "ipa": "/veɪl/", "say": "VEYL", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 2, "id": "w6-02"}, {"en": "identity", "form": "", "uz": "shaxsiyat, o‘zlik", "ipa": "/aɪˈdentəti/", "say": "ay-DEN-te-ti", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 3, "id": "w6-03"}, {"en": "die out", "form": "dying out", "uz": "yo‘qolib bormoq, yo‘qolmoq", "ipa": "/ˌdaɪ ˈaʊt/", "say": "day AUT", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 4, "id": "w6-04"}, {"en": "protection", "form": "", "uz": "himoya, muhofaza", "ipa": "/prəˈtekʃn/", "say": "pre-TEK-shn", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 5, "id": "w6-05"}, {"en": "weave", "form": "weaving", "uz": "to‘qimoq", "ipa": "/wiːv/", "say": "WIV", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 6, "id": "w6-06"}, {"en": "disappear", "form": "", "uz": "yo‘qolmoq, g‘oyib bo‘lmoq", "ipa": "/ˌdɪsəˈpɪər/", "say": "di-se-PIR", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 7, "id": "w6-07"}, {"en": "decline", "form": "declining", "uz": "kamaymoq, pasaymoq", "ipa": "/dɪˈklaɪn/", "say": "di-KLAYN", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 8, "id": "w6-08"}, {"en": "promote", "form": "", "uz": "targ‘ib qilmoq, qo‘llab-quvvatlamoq", "ipa": "/prəˈməʊt/", "say": "pre-MOUT", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 9, "id": "w6-09"}, {"en": "respect", "form": "", "uz": "hurmat, ehtirom", "ipa": "/rɪˈspekt/", "say": "ri-SPEKT", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 10, "id": "w6-10"}, {"en": "attention", "form": "", "uz": "e’tibor", "ipa": "/əˈtenʃn/", "say": "e-TEN-shn", "unit": "Unit 4A · Protecting Cultural Roots", "u": 6, "order": 11, "id": "w6-11"}, {"en": "monk", "form": "monks", "uz": "rohib", "ipa": "/mʌŋk/", "say": "MANK", "unit": "Unit 4B · 61-bet", "u": 7, "order": 0, "id": "w7-00"}, {"en": "inspire", "form": "inspired", "uz": "ilhomlantirmoq, ilhom olmoq", "ipa": "/ɪnˈspaɪər/", "say": "in-SPAY-er", "unit": "Unit 4B · 61-bet", "u": 7, "order": 1, "id": "w7-01"}, {"en": "movement", "form": "movements", "uz": "harakat", "ipa": "/ˈmuːvmənt/", "say": "MUV-ment", "unit": "Unit 4B · 61-bet", "u": 7, "order": 2, "id": "w7-02"}, {"en": "basis", "form": "", "uz": "asos, poydevor", "ipa": "/ˈbeɪsɪs/", "say": "BEY-sis", "unit": "Unit 4B · 61-bet", "u": 7, "order": 3, "id": "w7-03"}, {"en": "war", "form": "", "uz": "urush", "ipa": "/wɔːr/", "say": "WOR", "unit": "Unit 4B · 61-bet", "u": 7, "order": 4, "id": "w7-04"}, {"en": "win", "form": "won", "uz": "g‘alaba qozonmoq, yutmoq", "ipa": "/wɪn/", "say": "WIN", "unit": "Unit 4B · 61-bet", "u": 7, "order": 5, "id": "w7-05"}, {"en": "ensure", "form": "", "uz": "ta’minlamoq, kafolatlamoq", "ipa": "/ɪnˈʃʊər/", "say": "in-SHUR", "unit": "Unit 4B · 61-bet", "u": 7, "order": 6, "id": "w7-06"}, {"en": "force", "form": "", "uz": "kuch, kuch ishlatish organi", "ipa": "/fɔːs/", "say": "FORS", "unit": "Unit 4B · 61-bet", "u": 7, "order": 7, "id": "w7-07"}, {"en": "offer", "form": "offered", "uz": "taklif qilmoq", "ipa": "/ˈɒfərd/", "say": "O-ferd", "unit": "Unit 4B · 61-bet", "u": 7, "order": 8, "id": "w7-08"}, {"en": "publicity", "form": "", "uz": "ommaviylik, reklama", "ipa": "/pʌbˈlɪsəti/", "say": "pab-LI-se-ti", "unit": "Unit 4B · 61-bet", "u": 7, "order": 9, "id": "w7-09"}, {"en": "accept", "form": "", "uz": "qabul qilmoq, rozi bo‘lmoq", "ipa": "/əkˈsept/", "say": "ek-SEPT", "unit": "Unit 4B · 61-bet", "u": 7, "order": 10, "id": "w7-10"}, {"en": "violence", "form": "", "uz": "zoravonlik, shafqatsizlik", "ipa": "/ˈvaɪələns/", "say": "VAY-e-lens", "unit": "Unit 4B · 61-bet", "u": 7, "order": 11, "id": "w7-11"}, {"en": "attract", "form": "attracting", "uz": "jalb qilmoq, o‘ziga tortmoq", "ipa": "/əˈtrækt/", "say": "e-TREKT", "unit": "Unit 4B · 61-bet", "u": 7, "order": 12, "id": "w7-12"}, {"en": "remind", "form": "", "uz": "eslatmoq", "ipa": "/rɪˈmaɪnd/", "say": "ri-MAYND", "unit": "Unit 4B · 61-bet", "u": 7, "order": 13, "id": "w7-13"}, {"en": "entertain", "form": "", "uz": "ko‘ngil ochmoq", "ipa": "/ˌentəˈteɪn/", "say": "en-te-TEYN", "unit": "Unit 4B · 61-bet", "u": 7, "order": 14, "id": "w7-14"}, {"en": "convince", "form": "", "uz": "ishontirmoq, ko‘ndirmoq", "ipa": "/kənˈvɪns/", "say": "ken-VINS", "unit": "Unit 4B · 61-bet", "u": 7, "order": 15, "id": "w7-15"}, {"en": "unheated", "form": "", "uz": "isitilmagan", "ipa": "/ʌnˈhiːtɪd/", "say": "an-HI-tid", "unit": "Unit 4B · 61-bet", "u": 7, "order": 16, "id": "w7-16"}, {"en": "matter", "form": "no matter", "uz": "ahamiyatga ega bo‘lmoq (no matter – qat’i nazar)", "ipa": "/ˈmætər/", "say": "ME-ter", "unit": "Unit 4B · 61-bet", "u": 7, "order": 17, "id": "w7-17"}, {"en": "strength", "form": "", "uz": "kuch, quvvat", "ipa": "/streŋθ/", "say": "STRENGS", "unit": "Unit 4B · 61-bet", "u": 7, "order": 18, "id": "w7-18"}, {"en": "hardship", "form": "", "uz": "qiyinchilik, mashaqqat", "ipa": "/ˈhɑːdʃɪp/", "say": "HAD-ship", "unit": "Unit 4B · 61-bet", "u": 7, "order": 19, "id": "w7-19"}, {"en": "bitterness", "form": "", "uz": "achchiqlik, alam", "ipa": "/ˈbɪtənəs/", "say": "BI-te-nes", "unit": "Unit 4B · 61-bet", "u": 7, "order": 20, "id": "w7-20"}, {"en": "endure", "form": "", "uz": "bardosh bermoq, chidamoq", "ipa": "/ɪnˈdjʊər/", "say": "in-DYUR", "unit": "Unit 4B · 61-bet", "u": 7, "order": 21, "id": "w7-21"}];
+function loadWords(){const s=store.get("lg_words",null);return Array.isArray(s)?s:SEED.map(w=>({...w}))}
+let LOCAL=loadWords();
+function applyWords(){
+  WORDS=LOCAL.map(w=>({id:w.id,en:w.en||"",form:w.form||"",uz:w.uz||"",ipa:w.ipa||"",say:w.say||"",unit:w.unit||"Boshqa",u:+w.u||0,order:+w.order||0})).sort((a,b)=>a.u-b.u||a.order-b.order);
+  UNITS=[...new Set(WORDS.map(w=>w.unit))];loaded=true;stats();chips();
+}
+function persist(){store.set("lg_words",LOCAL);applyWords();if(mode==="list"||mode==="db")render()}
+db={collection:()=>({
+  doc:id=>({set:async d=>{const k=LOCAL.findIndex(w=>w.id===id);const row={...d,id};if(k>=0)LOCAL[k]=row;else LOCAL.push(row);persist()},
+            delete:async()=>{LOCAL=LOCAL.filter(w=>w.id!==id);persist()}}),
+  add:async d=>{LOCAL.push({...d,id:"u"+Date.now().toString(36)});persist()}
+})};
+canWrite=true;
+$("#dbDot").classList.add("on");$("#dbText").textContent="Shu qurilmada saqlanadi";
+applyWords();render();
+</script>
+</body>
+</html>
